@@ -1,0 +1,1 @@
+#define HSE 20000000U
