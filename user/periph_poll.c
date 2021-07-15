@@ -10,15 +10,26 @@
 
 void periphPoll() {
     CheckBlock check;
+    
     check.count_errors = 0;
-    
     pollSpiqf(&check);
-    pollUart(0, &check);
-    pollUart(1, &check);
-    pollI2cm(&check);
-    pollSpod(&check);
+    poll_tx_log(&check, OPCODE_SPIQF_POLL);
     
-    poll_tx_log(&check, OPCODE_PERIPH_POLL);
+    check.count_errors = 0;
+    pollUart(0, &check);
+    poll_tx_log(&check, OPCODE_UART0_POLL);
+    
+    check.count_errors = 0;
+    pollUart(1, &check);
+    poll_tx_log(&check, OPCODE_UART1_POLL);
+    
+    check.count_errors = 0;
+    pollI2cm(&check);
+    poll_tx_log(&check, OPCODE_I2CM_POLL);
+    
+    check.count_errors = 0;
+    pollSpod(&check);
+    poll_tx_log(&check, OPCODE_SPOD_POLL);
 }
 
 void pollSpiqf(CheckBlock *check) {
