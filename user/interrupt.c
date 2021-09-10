@@ -16,13 +16,13 @@ void BusFault_Handler()
 void TMR0_IRQHandler()
 {
     poll_en();
-    tmr0En();
+    tmr0_on();
 }
 
 void TMR1_IRQHandler()
 {
     poll_en();
-    tmr1En();
+    tmr1_on();
 }
 
 void EXT_IRQHandler()

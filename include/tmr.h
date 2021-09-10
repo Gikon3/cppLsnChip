@@ -14,12 +14,12 @@ typedef struct __TmrMap {
 
 #define TMR_M ((TmrMap *)MP_Timers_BASE)
 
-void tmr0Config(float ms);
-void tmr0En(void);
-void tmr0Dis(void);
-void tmr1Config(float ms);
-void tmr1En(void);
-void tmr1Dis(void);
-float tmr1State(void);
+void tmr0_config(float ms);
+void tmr0_on(void);
+void tmr0_off(void);
+void tmr1_config(float ms);
+void tmr1_on(void);
+void tmr1_off(void);
+uint32_t tmr1_state(void);
 
 #endif

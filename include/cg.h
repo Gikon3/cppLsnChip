@@ -7,24 +7,29 @@
 #define CLKSEL_CLKDIV   0
 #define CLKSEL_PLL      1
 
-typedef struct __CgMap {
+typedef struct
+{
     volatile uint32_t PLLCTRL;
     volatile uint32_t PLLOFF;
     volatile uint32_t CLKDIV;
     volatile uint32_t CLKSEL;
 } CgMap;
 
-typedef struct __CgInit {
+typedef struct
+{
     struct {
-        uint16_t nf;
-        uint8_t nr;
-        uint8_t od;
-    } pll_ctrl;
-} CgInit;
+        uint32_t nf : 13;
+        uint32_t nr : 6;
+        uint32_t od : 3;
+        uint32_t    : 10;
+    } ctrl;
+    uint8_t div;
+} Pll;
 
 #define CG_M ((CgMap *)MP_CG_BASE)
 
-int cgPllSearch(float pll_freq,  CgInit* cg_param);
-void cgConfig(float pll_freq);
+int cg_pll_search(uint32_t hz, Pll* pll);
+void cg_config(uint32_t hz);
+uint32_t cg_get_frq(void);
 
 #endif

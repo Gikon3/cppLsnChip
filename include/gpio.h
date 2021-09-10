@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include "cpp_lsn.h"
 
-typedef struct __GpioMap {
+typedef struct
+{
     volatile uint32_t DIR;
     volatile uint32_t ALT;
     volatile uint32_t OUT1;
@@ -21,7 +22,6 @@ typedef struct __GpioMap {
 #define GPIO_EVMASK_DIS 0
 #define GPIO_EVMASK_EN  1
 
-
-void gpioConf(void);
+void gpio_config(void);
 
 #endif

@@ -18,7 +18,8 @@ typedef struct __Spim4Map {
     volatile uint32_t RDY;
 } Spim4Map;
 
-typedef struct __Spim4ChInit {
+typedef struct
+{
     uint8_t ch_sel;
     
     uint8_t sck;

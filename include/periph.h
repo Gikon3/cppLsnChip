@@ -1,8 +1,7 @@
 #ifndef __periph_h
 #define __periph_h
 
-typedef enum Periph__
-{
+typedef enum {
     perRec1,
     perTran1,
     perRec2,
