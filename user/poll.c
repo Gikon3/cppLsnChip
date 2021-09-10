@@ -24,12 +24,15 @@ void poll_tx_log(CheckBlock *check, uint32_t blockId)
     spim1_txrx(OPCODE_BEGIN_MSG);
     spim1_txrx(blockId);
     spim1_txrx(check->count_errors);
+    uint32_t crc = OPCODE_BEGIN_MSG ^ blockId ^ check->count_errors;
     uint32_t num_cycles = check->count_errors < MAX_ERRORS ? check->count_errors: MAX_ERRORS;
     for (uint32_t i = 0; i < num_cycles; ++ i) {
         spim1_txrx(check->addr_array[i]);
         spim1_txrx(check->error_array[i]);
+        crc ^= check->addr_array[i];
+        crc ^= check->error_array[i];
     }
-    spim1_txrx(0x12345678); /* hash */
+    spim1_txrx(crc); /* hash */
     spim1_txrx(OPCODE_END_MSG);
 }
 
