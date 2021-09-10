@@ -186,7 +186,8 @@ void i2cmRead(CheckBlock *check) {
     }
 }
 
-void spodRead(CheckBlock *check) {
+void spodRead(CheckBlock *check)
+{
     if(SPOD_M->RUN != 0) {
         poll_add_word(check, (uint32_t)&SPOD_M->RUN, SPOD_M->RUN);
     }
@@ -207,15 +208,5 @@ void spodRead(CheckBlock *check) {
     }
     if(SPOD_M->ACF != 0) {
         poll_add_word(check, (uint32_t)&SPOD_M->ACF, SPOD_M->ACF);
-    }
-    for(uint8_t i = 0; i < 25; ++ i) {
-        if(SPOD_M->ETHB[i] != 0) {
-            poll_add_word(check, (uint32_t)&SPOD_M->ETHB[i], SPOD_M->ETHB[i]);
-        }
-    }
-    for(uint16_t i = 0; i < 512; ++ i) {
-        if(SPOD_M->BUFF[i] != 0) {
-            poll_add_word(check, (uint32_t)&SPOD_M->BUFF[i], SPOD_M->BUFF[i]);
-        }
     }
 }

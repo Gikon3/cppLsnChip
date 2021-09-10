@@ -13,11 +13,6 @@ typedef struct __SpodMap {
     volatile uint32_t ETHSH;
     volatile uint32_t ACF;
     volatile uint32_t :32;
-    volatile uint32_t :32;
-    volatile uint32_t ETHB[25];
-    volatile uint32_t :32;
-    volatile uint32_t :32;
-    volatile uint32_t BUFF[512];
 } SpodMap;
 
 #define SPOD_M ((SpodMap *)MP_SPOD_BASE)
