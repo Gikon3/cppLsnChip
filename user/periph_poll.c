@@ -64,13 +64,13 @@ void pollSpod(CheckBlock *check) {
 }
 
 void spiqfRead(CheckBlock *check) {
-    if((SPIQF_M->CONF & 0xF) != 0) {
+    if((SPIQF_M->CONF & 0xF) != 4) {
         poll_add_word(check, (uint32_t)&SPIQF_M->CONF, SPIQF_M->CONF);
     }
-    if(SPIQF_M->CW1 != 0) {
+    if(SPIQF_M->CW1 != 5) {
         poll_add_word(check, (uint32_t)&SPIQF_M->CW1, SPIQF_M->CW1);
     }
-    if(SPIQF_M->CW2 != 0) {
+    if(SPIQF_M->CW2 != 2) {
         poll_add_word(check, (uint32_t)&SPIQF_M->CW2, SPIQF_M->CW2);
     }
     if(SPIQF_M->WP != 1) {
@@ -82,7 +82,7 @@ void spiqfRead(CheckBlock *check) {
     if(SPIQF_M->RXF != 0) {
         poll_add_word(check, (uint32_t)&SPIQF_M->RXF, SPIQF_M->RXF);
     }
-    if(SPIQF_M->FL != 0) {
+    if(SPIQF_M->FL != 1) {
         poll_add_word(check, (uint32_t)&SPIQF_M->FL, SPIQF_M->FL);
     }
     if(SPIQF_M->RDY != 0) {
@@ -151,10 +151,10 @@ void uart1Read(CheckBlock *check) {
 }
 
 void i2cmRead(CheckBlock *check) {
-    if(I2CM_M->PRESC != 0x1A) {
+    if(I2CM_M->PRESC != 0x3C) {
         poll_add_word(check, (uint32_t)&I2CM_M->PRESC, I2CM_M->PRESC);
     }
-    if(I2CM_M->CONF != 0x201) {
+    if(I2CM_M->CONF != 0) {
         poll_add_word(check, (uint32_t)&I2CM_M->CONF, I2CM_M->CONF);
     }
     if(I2CM_M->TXED != 128) {

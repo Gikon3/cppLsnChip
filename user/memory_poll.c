@@ -3,19 +3,19 @@
 #include "poll.h"
 #include "memory_poll.h"
 
-volatile uint32_t pattern0_5 = PATTERN_5;
-volatile uint32_t pattern1_5 = PATTERN_5;
-volatile uint32_t pattern2_5 = PATTERN_5;
+volatile static uint32_t pattern0_5 = PATTERN_5;
+volatile static uint32_t pattern1_5 = PATTERN_5;
+volatile static uint32_t pattern2_5 = PATTERN_5;
 
-volatile uint32_t pattern0_A = PATTERN_A;
-volatile uint32_t pattern1_A = PATTERN_A;
-volatile uint32_t pattern2_A = PATTERN_A;
+volatile static uint32_t pattern0_A = PATTERN_A;
+volatile static uint32_t pattern1_A = PATTERN_A;
+volatile static uint32_t pattern2_A = PATTERN_A;
 
-volatile uint8_t f_init = 0;
-volatile uint8_t f_parity0 = 0;
-volatile uint8_t f_parity1 = 0;
-volatile uint8_t f_parity2 = 0;
-uint32_t ARRAY[ARRAY_SIZE];
+volatile static uint8_t f_init = 0;
+volatile static uint8_t f_parity0 = 0;
+volatile static uint8_t f_parity1 = 0;
+volatile static uint8_t f_parity2 = 0;
+static uint32_t ARRAY[ARRAY_SIZE];
 
 void memoryPoll() {
     CheckBlock check;
