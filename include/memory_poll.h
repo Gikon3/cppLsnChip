@@ -5,7 +5,7 @@
 #include "cpp_lsn.h"
 #include "poll.h"
 
-#define ARRAY_SIZE  1000
+#define ARRAY_SIZE  30000
 #define PATTERN_5   0x55555555
 #define PATTERN_A   0xAAAAAAAA
 
