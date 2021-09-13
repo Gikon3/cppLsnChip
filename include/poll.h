@@ -25,6 +25,7 @@ typedef struct __CheckBlock {
     uint32_t error_array[MAX_ERRORS];
 } CheckBlock;
 
+void poll_init(void);
 void poll_en(void);
 void poll_dis(void);
 uint8_t poll_get_fl(void);

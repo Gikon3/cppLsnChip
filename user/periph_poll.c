@@ -8,6 +8,13 @@
 #include "uart.h"
 #include "rc.h"
 
+static uint8_t initFl = 0;
+
+void periph_poll_init()
+{
+    initFl = 0;
+}
+
 void periphPoll() {
     CheckBlock check;
     
@@ -30,35 +37,37 @@ void periphPoll() {
     check.count_errors = 0;
     pollSpod(&check);
     poll_tx_log(&check, OPCODE_SPOD_POLL);
+    
+    initFl = 0xFF;
 }
 
 void pollSpiqf(CheckBlock *check) {
-    spiqfRead(check);
+    if (initFl) spiqfRead(check);
     rc_ctrl(perSpiqf, rstReset);
     rc_ctrl(perSpiqf, rstUnreset);
 }
 
 void pollUart(uint8_t uart_sel, CheckBlock *check) {
     if(!uart_sel) {
-        uart0Read(check);
+        if (initFl) uart0Read(check);
         rc_ctrl(perUart0, rstReset);
         rc_ctrl(perUart0, rstUnreset);
     }
     else {
-        uart1Read(check);
+        if (initFl) uart1Read(check);
         rc_ctrl(perUart1, rstReset);
         rc_ctrl(perUart1, rstUnreset);
     }
 }
 
 void pollI2cm(CheckBlock *check) {
-    i2cmRead(check);
+    if (initFl) i2cmRead(check);
     rc_ctrl(perI2cm, rstReset);
     rc_ctrl(perI2cm, rstUnreset);
 }
 
 void pollSpod(CheckBlock *check) {
-    spodRead(check);
+    if (initFl) spodRead(check);
     rc_ctrl(perSpod, rstReset);
     rc_ctrl(perSpod, rstUnreset);
 }

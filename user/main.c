@@ -23,6 +23,9 @@ int main() {
     tmr1_config(100);
     tmr1_on();
     
+    poll_init();
+    memory_poll_init();
+    periph_poll_init();
     while(1) {
         if(poll_get_fl()) {
             poll_dis();

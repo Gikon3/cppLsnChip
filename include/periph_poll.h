@@ -6,6 +6,7 @@
 #include "poll.h"
 #include "periph_poll.h"
 
+void periph_poll_init(void);
 void periphPoll(void);
 void pollSpiqf(CheckBlock *check);
 void pollUart(uint8_t uart_sel, CheckBlock *check);

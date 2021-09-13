@@ -2,7 +2,12 @@
 #include "poll.h"
 #include "spim1.h"
 
-static uint8_t pollFl;
+static uint8_t pollFl = 0;
+
+void poll_init()
+{
+    pollFl = 0;
+}
 
 void poll_en()
 {

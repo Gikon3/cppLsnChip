@@ -3,33 +3,50 @@
 #include "poll.h"
 #include "memory_poll.h"
 
-volatile static uint32_t pattern0_5 = PATTERN_5;
-volatile static uint32_t pattern1_5 = PATTERN_5;
-volatile static uint32_t pattern2_5 = PATTERN_5;
+static uint32_t pattern0_5 = PATTERN_5;
+static uint32_t pattern1_5 = PATTERN_5;
+static uint32_t pattern2_5 = PATTERN_5;
+static uint32_t pattern0_A = PATTERN_A;
+static uint32_t pattern1_A = PATTERN_A;
+static uint32_t pattern2_A = PATTERN_A;
 
-volatile static uint32_t pattern0_A = PATTERN_A;
-volatile static uint32_t pattern1_A = PATTERN_A;
-volatile static uint32_t pattern2_A = PATTERN_A;
-
-volatile static uint8_t f_init = 0;
-volatile static uint8_t f_parity0 = 0;
-volatile static uint8_t f_parity1 = 0;
-volatile static uint8_t f_parity2 = 0;
+static uint8_t initFl = 0;
+static uint8_t f_parity0 = 0;
+static uint8_t f_parity1 = 0;
+static uint8_t f_parity2 = 0;
 static uint32_t ARRAY[ARRAY_SIZE];
+
+void memory_poll_init()
+{
+    pattern0_5 = PATTERN_5;
+    pattern1_5 = PATTERN_5;
+    pattern2_5 = PATTERN_5;
+    pattern0_A = PATTERN_A;
+    pattern1_A = PATTERN_A;
+    pattern2_A = PATTERN_A;
+    
+    initFl = 0;
+    f_parity0 = 0;
+    f_parity1 = 0;
+    f_parity2 = 0;
+}
 
 void memoryPoll() {
     CheckBlock check;
     check.count_errors = 0;
     
-    if(memoryNoFirstCycle()) {
+    if (initFl) {
         memoryRead(memoryGetPat(), &check);
         poll_tx_log(&check, memory0_opcode());
         check.count_errors = 0;
         memoryParitySwap();
     }
-    memorySetFirstCycle();
+    initFl = 0xFF;
     
     memoryWrite(memoryGetPat());
+#   if (MEMORY_TEST == 1)
+    mem_insert_errors();
+#   endif
     memoryRead(memoryGetPat(), &check);
     
     poll_tx_log(&check, memory1_opcode());
@@ -47,14 +64,6 @@ void memoryWrite(uint32_t pattern) {
     for(uint32_t i = 0; i < ARRAY_SIZE; ++ i) {
         ARRAY[i] = pattern;
     }
-}
-
-int memoryNoFirstCycle() {
-    return f_init;
-}
-
-void memorySetFirstCycle() {
-    f_init = 0xFF;
 }
 
 int memoryGetParityCycle() {
@@ -85,22 +94,26 @@ uint32_t memoryGetCorrectPat5() {
     if(pattern0_5 == pattern1_5 || pattern1_5 == pattern2_5) {
         pattern0_5 = pattern1_5;
         pattern2_5 = pattern1_5;
+        return pattern2_5;
     }
-    else if(pattern0_5 == pattern2_5) {
+    if(pattern0_5 == pattern2_5) {
         pattern1_5 = pattern0_5;
+        return pattern1_5;
     }
-    return pattern0_5;
+    return PATTERN_5;
 }
 
 uint32_t memoryGetCorrectPatA() {
     if(pattern0_A == pattern1_A || pattern1_A == pattern2_A) {
         pattern0_A = pattern1_A;
         pattern2_A = pattern1_A;
+        return pattern2_A;
     }
-    else if(pattern0_A == pattern2_A) {
+    if(pattern0_A == pattern2_A) {
         pattern1_A = pattern0_A;
+        return pattern1_A;
     }
-    return pattern0_A;
+    return PATTERN_A;
 }
 
 uint32_t memory0_opcode()
