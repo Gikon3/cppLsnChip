@@ -45,6 +45,9 @@ void pollSpiqf(CheckBlock *check) {
     if (initFl) spiqfRead(check);
     rc_ctrl(perSpiqf, rstReset);
     rc_ctrl(perSpiqf, rstUnreset);
+#   if (PERIPH_TEST == 1)
+    spiqf_insert_errors();
+#   endif
 }
 
 void pollUart(uint8_t uart_sel, CheckBlock *check) {
@@ -52,11 +55,17 @@ void pollUart(uint8_t uart_sel, CheckBlock *check) {
         if (initFl) uart0Read(check);
         rc_ctrl(perUart0, rstReset);
         rc_ctrl(perUart0, rstUnreset);
+#       if (PERIPH_TEST == 1)
+        uart0_insert_errors();
+#       endif
     }
     else {
         if (initFl) uart1Read(check);
         rc_ctrl(perUart1, rstReset);
         rc_ctrl(perUart1, rstUnreset);
+#       if (PERIPH_TEST == 1)
+        uart1_insert_errors();
+#       endif
     }
 }
 
@@ -64,12 +73,18 @@ void pollI2cm(CheckBlock *check) {
     if (initFl) i2cmRead(check);
     rc_ctrl(perI2cm, rstReset);
     rc_ctrl(perI2cm, rstUnreset);
+#   if (PERIPH_TEST == 1)
+    i2cm_insert_errors();
+#   endif
 }
 
 void pollSpod(CheckBlock *check) {
     if (initFl) spodRead(check);
     rc_ctrl(perSpod, rstReset);
     rc_ctrl(perSpod, rstUnreset);
+#   if (PERIPH_TEST == 1)
+    spod_insert_errors();
+#   endif
 }
 
 void spiqfRead(CheckBlock *check) {
@@ -219,3 +234,51 @@ void spodRead(CheckBlock *check)
         poll_add_word(check, (uint32_t)&SPOD_M->ACF, SPOD_M->ACF);
     }
 }
+
+#if (PERIPH_TEST == 1)
+void spiqf_insert_errors()
+{
+    SPIQF_M->CONF = 0xFFFFFFFF;
+    SPIQF_M->CW1 = 0xFFFFFFFF;
+    SPIQF_M->CW2 = 0xFFFFFFFF;
+    SPIQF_M->WP = 0;
+}
+
+void uart0_insert_errors()
+{
+    UART0_M->BRT = 0xFFFFFFFF;
+    UART0_M->TXPRM = 0xFFFFFFFF;
+    UART0_M->TXCONF = 0xFFFFFFFF;
+    UART0_M->BRR = 0xFFFFFFFF;
+    UART0_M->RXPRM = 0xFFFFFFFF;
+    UART0_M->RXCONF = 0xFFFFFFFF;
+}
+
+void uart1_insert_errors()
+{
+    UART1_M->BRT = 0xFFFFFFFF;
+    UART1_M->TXPRM = 0xFFFFFFFF;
+    UART1_M->TXCONF = 0xFFFFFFFF;
+    UART1_M->BRR = 0xFFFFFFFF;
+    UART1_M->RXPRM = 0xFFFFFFFF;
+    UART1_M->RXCONF = 0xFFFFFFFF;
+}
+
+void i2cm_insert_errors()
+{
+    I2CM_M->PRESC = 0;
+    I2CM_M->CONF = 0xFFFFFFFF;
+    I2CM_M->ADDRSCAN = 0xFFFFFFFF;
+    I2CM_M->SCANEN = 0xFFFFFFFF;
+    I2CM_M->SCANFL = 0xFFFFFFFF;
+    I2CM_M->EOSMSK = 0xFFFFFFFF;
+}
+
+void spod_insert_errors()
+{
+    SPOD_M->RUN = 0xFFFFFFFF;
+    SPOD_M->SCALE = 0xFFFFFFFF;
+    SPOD_M->CTRL = 0xFFFFFFFF;
+    SPOD_M->ETHSH = 0;
+}
+#endif

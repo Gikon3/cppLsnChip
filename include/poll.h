@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include "cpp_lsn.h"
 
-#define MAX_ERRORS  64
+#define MAX_ERRORS      64
+#define TEST_ERRORS     0
 
 #define OPCODE_START            0xF0DAA000
 #define OPCODE_BEGIN_MSG        0xF0DA0000

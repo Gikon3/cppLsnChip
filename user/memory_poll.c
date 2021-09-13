@@ -127,3 +127,12 @@ uint32_t memory1_opcode()
     if (memoryGetParityCycle()) return OPCODE_MEMORY1_A_POLL;
     else return OPCODE_MEMORY1_5_POLL;
 }
+
+#if (MEMORY_TEST == 1)
+void mem_insert_errors()
+{
+    for (unsigned int i = 0; i < 100; ++i) {
+        ARRAY[i*30] = 0x11111111;
+    }
+}
+#endif
